@@ -1,0 +1,7 @@
+# Ignore dependencies and build artifacts across subfolders
+**/node_modules/
+**/vendor/
+**/.env
+**/.env.local
+**/build/
+**/pubspec.lock

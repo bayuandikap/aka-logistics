@@ -59,7 +59,7 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasAnyRole([
             'super_admin',
             'admin_operasional',
-            'petugas',
+            'dispatcher',
         ]);
     }
 }

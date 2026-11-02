@@ -14,7 +14,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Illuminate\Database\Eloquent\Model;
 
 class BranchResource extends Resource
 {
@@ -27,31 +26,6 @@ class BranchResource extends Resource
     protected static ?string $modelLabel = 'Cabang';
 
     protected static ?string $pluralModelLabel = 'Cabang';
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->can('view branches') ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->can('create branches') ?? false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()?->can('edit branches') ?? false;
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()?->can('delete branches') ?? false;
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->can('delete branches') ?? false;
-    }
 
     public static function form(Form $form): Form
     {

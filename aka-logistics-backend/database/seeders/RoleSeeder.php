@@ -15,30 +15,57 @@ class RoleSeeder extends Seeder
 
         $guard = 'web';
 
+        // Shield-style permission names — must match the Policies and the Roles panel.
+        // Note: FilamentShield derives the resource slug from the model class name, so
+        // TrackingCheckpoint becomes "tracking::checkpoint" (namespace separator style).
         $permissions = [
             // Branches
-            'view branches',
-            'create branches',
-            'edit branches',
-            'delete branches',
+            'view_any_branch',
+            'view_branch',
+            'create_branch',
+            'update_branch',
+            'delete_branch',
+            'delete_any_branch',
+            'force_delete_branch',
+            'force_delete_any_branch',
+            'restore_branch',
+            'restore_any_branch',
 
             // Tariffs
-            'view tariffs',
-            'create tariffs',
-            'edit tariffs',
-            'delete tariffs',
+            'view_any_tariff',
+            'view_tariff',
+            'create_tariff',
+            'update_tariff',
+            'delete_tariff',
+            'delete_any_tariff',
+            'force_delete_tariff',
+            'force_delete_any_tariff',
+            'restore_tariff',
+            'restore_any_tariff',
 
             // Shipments
-            'view shipments',
-            'create shipments',
-            'edit shipments',
-            'delete shipments',
+            'view_any_shipment',
+            'view_shipment',
+            'create_shipment',
+            'update_shipment',
+            'delete_shipment',
+            'delete_any_shipment',
+            'force_delete_shipment',
+            'force_delete_any_shipment',
+            'restore_shipment',
+            'restore_any_shipment',
 
-            // Tracking checkpoints
-            'view tracking checkpoints',
-            'create tracking checkpoints',
-            'edit tracking checkpoints',
-            'delete tracking checkpoints',
+            // Tracking checkpoints (Shield uses "tracking::checkpoint" as the resource slug)
+            'view_any_tracking::checkpoint',
+            'view_tracking::checkpoint',
+            'create_tracking::checkpoint',
+            'update_tracking::checkpoint',
+            'delete_tracking::checkpoint',
+            'delete_any_tracking::checkpoint',
+            'force_delete_tracking::checkpoint',
+            'force_delete_any_tracking::checkpoint',
+            'restore_tracking::checkpoint',
+            'restore_any_tracking::checkpoint',
         ];
 
         foreach ($permissions as $permission) {
@@ -58,6 +85,11 @@ class RoleSeeder extends Seeder
             'guard_name' => $guard,
         ]);
 
+        $dispatcher = Role::firstOrCreate([
+            'name' => 'dispatcher',
+            'guard_name' => $guard,
+        ]);
+
         $petugas = Role::firstOrCreate([
             'name' => 'petugas',
             'guard_name' => $guard,
@@ -66,29 +98,51 @@ class RoleSeeder extends Seeder
         // Super admin receives every defined permission.
         $superAdmin->syncPermissions($permissions);
 
-        // Operational admin: manage shipments and tracking,
-        // view branches and tariffs.
+        // Operational admin: manage shipments and tracking, view branches and tariffs.
         $adminOperasional->syncPermissions([
-            'view branches',
-            'view tariffs',
+            'view_any_branch',
+            'view_branch',
 
-            'view shipments',
-            'create shipments',
-            'edit shipments',
-            'delete shipments',
+            'view_any_tariff',
+            'view_tariff',
 
-            'view tracking checkpoints',
-            'create tracking checkpoints',
-            'edit tracking checkpoints',
-            'delete tracking checkpoints',
+            'view_any_shipment',
+            'view_shipment',
+            'create_shipment',
+            'update_shipment',
+            'delete_shipment',
+            'delete_any_shipment',
+
+            'view_any_tracking::checkpoint',
+            'view_tracking::checkpoint',
+            'create_tracking::checkpoint',
+            'update_tracking::checkpoint',
+            'delete_tracking::checkpoint',
+            'delete_any_tracking::checkpoint',
         ]);
 
-        // Petugas: view shipments and manage tracking updates.
+        // Dispatcher: create and manage shipments, create tracking updates.
+        $dispatcher->syncPermissions([
+            'view_any_shipment',
+            'view_shipment',
+            'create_shipment',
+            'update_shipment',
+
+            'view_any_tracking::checkpoint',
+            'view_tracking::checkpoint',
+            'create_tracking::checkpoint',
+            'update_tracking::checkpoint',
+        ]);
+
+        // Petugas: view shipments and add tracking updates.
         $petugas->syncPermissions([
-            'view shipments',
-            'view tracking checkpoints',
-            'create tracking checkpoints',
-            'edit tracking checkpoints',
+            'view_any_shipment',
+            'view_shipment',
+
+            'view_any_tracking::checkpoint',
+            'view_tracking::checkpoint',
+            'create_tracking::checkpoint',
+            'update_tracking::checkpoint',
         ]);
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();

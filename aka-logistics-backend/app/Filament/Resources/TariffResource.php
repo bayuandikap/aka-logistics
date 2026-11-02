@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class TariffResource extends Resource
 {
@@ -27,31 +26,6 @@ class TariffResource extends Resource
     protected static ?string $pluralModelLabel = 'Tarif Pengiriman';
 
     protected static ?int $navigationSort = 3;
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->can('view tariffs') ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->can('create tariffs') ?? false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()?->can('edit tariffs') ?? false;
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()?->can('delete tariffs') ?? false;
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->can('delete tariffs') ?? false;
-    }
 
     public static function form(Form $form): Form
     {

@@ -19,7 +19,7 @@ class EditShipment extends EditRecord
             Actions\DeleteAction::make()
                 ->visible(
                     fn(): bool =>
-                    auth()->user()?->can('delete shipments') ?? false
+                    auth()->user()?->can('delete_shipment') ?? false
                 ),
         ];
     }

@@ -267,7 +267,7 @@ export default function Home() {
                     >
                       <div className="flex flex-col items-center">
                         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm font-bold text-orange-700">
-                          {shipment.timeline.length - index}
+                          {index + 1}
                         </span>
                         {index < shipment.timeline.length - 1 && (
                           <span className="mt-2 min-h-8 w-px flex-1 bg-slate-200" />

@@ -7,7 +7,6 @@ use App\Models\TrackingCheckpoint;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Shipment;
 use Illuminate\Support\Facades\DB;
 
@@ -24,31 +23,6 @@ class TrackingCheckpointResource extends Resource
     protected static ?string $pluralModelLabel = 'Riwayat Pelacakan';
 
     protected static ?string $navigationGroup = 'Manajemen Pengiriman';
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->can('view tracking checkpoints') ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->can('create tracking checkpoints') ?? false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()?->can('edit tracking checkpoints') ?? false;
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()?->can('delete tracking checkpoints') ?? false;
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->can('delete tracking checkpoints') ?? false;
-    }
 
     public static function form(Form $form): Form
     {
@@ -143,7 +117,7 @@ class TrackingCheckpointResource extends Resource
                     ->label('Ubah')
                     ->visible(
                         fn(TrackingCheckpoint $record): bool =>
-                        auth()->user()?->can('edit tracking checkpoints') ?? false
+                        auth()->user()?->can('update_tracking::checkpoint') ?? false
                     ),
             ])
             ->bulkActions([
@@ -151,7 +125,7 @@ class TrackingCheckpointResource extends Resource
                     ->label('Hapus Terpilih')
                     ->visible(
                         fn(): bool =>
-                        auth()->user()?->can('delete tracking checkpoints') ?? false
+                        auth()->user()?->can('delete_any_tracking::checkpoint') ?? false
                     )
                     ->before(function ($action) {
                         $shipmentIds = $action->getRecords()
@@ -193,7 +167,8 @@ class TrackingCheckpointResource extends Resource
 
                         $livewire->bulkDeletedShipmentIds = [];
                     }),
-            ]);
+            ])
+            ->defaultSort('event_timestamp', 'desc');
     }
 
     public static function getRelations(): array

@@ -12,11 +12,12 @@
         "php": "^8.2",
         "ext-intl": "*",
         "ext-zip": "*",
+        "bezhansalleh/filament-shield": "*",
         "filament/filament": "3.3",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "spatie/laravel-permission": "^6.25"
+        "spatie/laravel-permission": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

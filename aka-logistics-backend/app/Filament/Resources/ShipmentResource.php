@@ -9,7 +9,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 
 class ShipmentResource extends Resource
 {
@@ -24,31 +26,6 @@ class ShipmentResource extends Resource
     protected static ?string $modelLabel = 'Pengiriman';
 
     protected static ?string $pluralModelLabel = 'Pengiriman';
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->can('view shipments') ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->can('create shipments') ?? false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()?->can('edit shipments') ?? false;
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()?->can('delete shipments') ?? false;
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->can('delete shipments') ?? false;
-    }
 
     public static function form(Form $form): Form
     {
@@ -218,26 +195,95 @@ class ShipmentResource extends Resource
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->visible(
-                        fn(Shipment $record): bool =>
-                        auth()->user()?->can('edit shipments') ?? false
-                    ),
+                // Modal Action to log checkpoints directly from the table row
+                Action::make('addCheckpoint')
+                    ->label('Update Checkpoint')
+                    ->icon('heroicon-m-map-pin')
+                    ->color('warning')
+                    ->form([
+                        Forms\Components\Select::make('branch_id')
+                            ->label('Cabang / Hub Lokasi')
+                            ->relationship('originBranch', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
+                        Forms\Components\Select::make('status')
+                            ->label('Status Kargo Baru')
+                            ->options([
+                                'REGISTERED' => 'Registered / Diterima di Hub Asal',
+                                'DEPARTED_ORIGIN_PORT' => 'Departed Port / Berangkat dari Pelabuhan',
+                                'IN_MARITIME_TRANSIT' => 'In Maritime Transit / Berlayar',
+                                'ARRIVED_AT_DESTINATION_HUB' => 'Arrived at Destination Hub / Tiba di Tujuan',
+                                'WITH_COURIER' => 'With Courier / Dibawa Kurir',
+                                'DELIVERED' => 'Delivered / Selesai Diterima',
+                            ])
+                            ->required(),
+
+                        Forms\Components\TextInput::make('location_label')
+                            ->label('Nama Titik Lokasi')
+                            ->placeholder('Contoh: Pelabuhan Tanjung Perak, Surabaya')
+                            ->required(),
+
+                        Forms\Components\Textarea::make('description')
+                            ->label('Keterangan Perjalanan')
+                            ->placeholder('Contoh: Kargo telah dimuat ke KM Nusantara Ekspres')
+                            ->required(),
+
+                        Forms\Components\DateTimePicker::make('event_timestamp')
+                            ->label('Waktu Checkpoint')
+                            ->default(now())
+                            ->required(),
+                    ])
+                    ->action(function (Shipment $record, array $data): void {
+                        // Strict atomic transaction to keep checkpoints and shipments synchronized
+                        DB::transaction(function () use ($record, $data) {
+                            $record->checkpoints()->create([
+                                'branch_id' => $data['branch_id'],
+                                'status' => $data['status'],
+                                'location_label' => $data['location_label'],
+                                'description' => $data['description'],
+                                'event_timestamp' => $data['event_timestamp'],
+                                'created_by' => auth()->id(),
+                            ]);
+
+                            $record->update([
+                                'current_status' => $data['status'],
+                            ]);
+                        });
+
+                        Notification::make()
+                            ->title('Checkpoint Berhasil Dicatat')
+                            ->body("Resi {$record->tracking_number} kini berstatus: {$data['status']}")
+                            ->success()
+                            ->send();
+                    }),
+
+                EditAction::make(),
+                ViewAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ])
             ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            \App\Filament\Resources\ShipmentResource\RelationManagers\CheckpointsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListShipments::route('/'),
+            'index'  => Pages\ListShipments::route('/'),
             'create' => Pages\CreateShipment::route('/create'),
-            'edit' => Pages\EditShipment::route('/{record}/edit'),
+            'view'   => Pages\ViewShipment::route('/{record}'),
+            'edit'   => Pages\EditShipment::route('/{record}/edit'),
         ];
     }
 }

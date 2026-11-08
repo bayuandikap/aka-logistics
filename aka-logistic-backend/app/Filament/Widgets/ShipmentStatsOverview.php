@@ -21,14 +21,14 @@ class ShipmentStatsOverview extends BaseWidget
         $onHoldShipments = Shipment::where('current_status', 'ON_HOLD')->count();
 
         return [
-            Stat::make('Total Shipments', $totalShipments)
-                ->description('All registered shipments')->color('primary')->icon('heroicon-o-cube'),
-            Stat::make('Delivered', $deliveredShipments)
-                ->description('Successfully delivered')->color('success')->icon('heroicon-o-check-circle'),
-            Stat::make('In Transit', $inTransitShipments)
-                ->description('Currently in transportation')->color('warning')->icon('heroicon-o-truck'),
-            Stat::make('On Hold', $onHoldShipments)
-                ->description('Require operational attention')->color('danger')->icon('heroicon-o-exclamation-triangle'),
+            Stat::make('Total Pengiriman', $totalShipments)
+                ->description('Seluruh pengiriman terdaftar')->color('primary')->icon('heroicon-o-cube'),
+            Stat::make('Terkirim', $deliveredShipments)
+                ->description('Berhasil diantarkan')->color('success')->icon('heroicon-o-check-circle'),
+            Stat::make('Dalam Perjalanan', $inTransitShipments)
+                ->description('Sedang dalam proses pengiriman')->color('warning')->icon('heroicon-o-truck'),
+            Stat::make('Tertahan', $onHoldShipments)
+                ->description('Memerlukan tindak lanjut operasional')->color('danger')->icon('heroicon-o-exclamation-triangle'),
         ];
     }
 }

@@ -6,7 +6,6 @@ use App\Models\Branch;
 use App\Models\Shipment;
 use App\Models\Tariff;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 
 class DashboardDemoSeeder extends Seeder
 {
@@ -137,7 +136,11 @@ class DashboardDemoSeeder extends Seeder
                 ],
             );
 
-            $shipment->created_at = $createdAt;\n            $shipment->updated_at = $eventAt;\n            $shipment->saveQuietly();\n\n            $location = in_array($status, ['DELIVERED', 'ARRIVED_AT_DESTINATION'], true)
+            $shipment->created_at = $createdAt;
+            $shipment->updated_at = $eventAt;
+            $shipment->saveQuietly();
+
+            $location = in_array($status, ['DELIVERED', 'ARRIVED_AT_DESTINATION'], true)
                 ? $destination
                 : $origin;
 

@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class CheckpointsRelationManager extends RelationManager
@@ -121,6 +122,7 @@ class CheckpointsRelationManager extends RelationManager
                 Tables\Actions\DeleteBulkAction::make()
                     ->label('Hapus Terpilih')
                     ->visible(fn (): bool => auth()->user()?->can('delete tracking checkpoints') ?? false)
+                    ->authorize(fn (): bool => auth()->user()?->can('delete tracking checkpoints') ?? false)
                     ->after(fn () => $this->syncShipmentStatus()),
             ]);
     }

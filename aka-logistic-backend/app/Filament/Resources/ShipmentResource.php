@@ -218,6 +218,13 @@ class ShipmentResource extends Resource
                     ->sortable(),
             ])
             ->actions([
+                Tables\Actions\Action::make('printAwb')
+                    ->label('Print AWB')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn (Shipment $record): string => route('shipments.awb', $record))
+                    ->openUrlInNewTab()
+                    ->visible(fn (): bool => auth()->user()?->can('view shipments') ?? false),
+
                 Tables\Actions\EditAction::make()
                     ->visible(
                         fn(Shipment $record): bool =>

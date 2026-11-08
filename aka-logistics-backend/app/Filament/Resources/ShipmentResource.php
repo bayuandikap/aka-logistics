@@ -200,7 +200,7 @@ class ShipmentResource extends Resource
                 Tables\Columns\TextColumn::make('current_status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'REGISTERED' => 'gray',
                         'IN_MARITIME_TRANSIT' => 'info',
                         'DELIVERED' => 'success',
@@ -218,10 +218,17 @@ class ShipmentResource extends Resource
                     ->sortable(),
             ])
             ->actions([
+                Tables\Actions\Action::make('printAwb')
+                    ->label('Print AWB')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn (Shipment $record): string => route('shipments.awb', $record))
+                    ->openUrlInNewTab()
+                    ->visible(fn (): bool => auth()->user()?->can('view shipments') ?? false),
+
                 Tables\Actions\EditAction::make()
                     ->visible(
-                        fn(Shipment $record): bool =>
-                        auth()->user()?->can('edit shipments') ?? false
+                        fn (Shipment $record): bool =>
+                            auth()->user()?->can('edit shipments') ?? false
                     ),
             ])
             ->defaultSort('created_at', 'desc');

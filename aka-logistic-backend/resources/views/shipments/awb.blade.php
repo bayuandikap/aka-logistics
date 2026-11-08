@@ -55,7 +55,7 @@
                 <div><div class="field-label">Tujuan</div><div class="route-name">{{ $shipment->destinationBranch?->name ?? '-' }}</div><div class="muted">{{ $shipment->destinationBranch?->city ?? '' }}</div></div>
             </div>
             <div class="row" style="margin-top:10px">
-                <div><span class="field-label">Layanan</span><strong>{{ str_replace('_', ' ', $shipment->service_type) }}</strong></div>
+                <div><span class="field-label">Layanan</span><strong>{{ match ($shipment->service_type) { 'REGULAR_SEA' => 'Kargo Laut Reguler', 'EXPRESS_AIR' => 'Kargo Udara Ekspres', 'OVERLAND' => 'Kargo Darat', default => str_replace('_', ' ', $shipment->service_type) } }}</strong></div>
                 <div><span class="field-label">Estimasi tiba</span><strong>{{ $shipment->estimated_arrival?->format('d M Y') ?? '-' }}</strong></div>
                 <div><span class="field-label">Status</span><span class="status">{{ match ($shipment->current_status) { 'REGISTERED' => 'Terdaftar', 'IN_TRANSIT' => 'Dalam Perjalanan', 'IN_MARITIME_TRANSIT' => 'Dalam Pelayaran Laut', 'ARRIVED_AT_DESTINATION' => 'Tiba di Cabang Tujuan', 'DELIVERED' => 'Terkirim', 'ON_HOLD' => 'Tertahan', default => str_replace('_', ' ', $shipment->current_status) } }}</span></div>
             </div>

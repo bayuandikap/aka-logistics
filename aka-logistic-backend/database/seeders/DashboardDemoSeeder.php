@@ -102,7 +102,7 @@ class DashboardDemoSeeder extends Seeder
             $weightFee = round($chargeableWeight * (float) $tariff->rate_per_kg, 2);
             $createdAt = now()->subDays($createdDaysAgo)->setTime(9 + ($createdDaysAgo % 8), 15);
             $eta = now()->addDays($etaOffset)->toDateString();
-            $eventAt = now()->addDays($eventOffset)->setTime(10 + ($createdDaysAgo % 7), 30);
+            $eventAt = now()->subDays(min($createdDaysAgo, abs($eventOffset)))->setTime(10 + ($createdDaysAgo % 7), 30);
 
             $shipment = Shipment::updateOrCreate(
                 ['tracking_number' => 'AKA-DEMO-' . $number],

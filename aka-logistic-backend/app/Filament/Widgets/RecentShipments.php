@@ -9,7 +9,7 @@ use Filament\\Widgets\\TableWidget as BaseWidget;
 
 class RecentShipments extends BaseWidget
 {
-    protected static ?string $heading = 'Recent Shipments';
+    protected static ?string $heading = 'Pengiriman Terbaru';
 
     protected static ?int $sort = 4;
 
@@ -22,11 +22,11 @@ class RecentShipments extends BaseWidget
             ->defaultPaginationPageOption(5)
             ->columns([
                 Tables\\Columns\\TextColumn::make('tracking_number')
-                    ->label('Tracking Number')->searchable()->copyable()->weight('bold'),
-                Tables\\Columns\\TextColumn::make('sender_name')->label('Sender')->searchable(),
-                Tables\\Columns\\TextColumn::make('recipient_name')->label('Recipient')->searchable(),
-                Tables\\Columns\\TextColumn::make('originBranch.name')->label('Origin'),
-                Tables\\Columns\\TextColumn::make('destinationBranch.name')->label('Destination'),
+                    ->label('Nomor Resi')->searchable()->copyable()->weight('bold'),
+                Tables\\Columns\\TextColumn::make('sender_name')->label('Pengirim')->searchable(),
+                Tables\\Columns\\TextColumn::make('recipient_name')->label('Penerima')->searchable(),
+                Tables\\Columns\\TextColumn::make('originBranch.name')->label('Asal'),
+                Tables\\Columns\\TextColumn::make('destinationBranch.name')->label('Tujuan'),
                 Tables\\Columns\\TextColumn::make('current_status')
                     ->label('Status')->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -39,7 +39,7 @@ class RecentShipments extends BaseWidget
                         default => 'gray',
                     }),
                 Tables\\Columns\\TextColumn::make('created_at')
-                    ->label('Created')->dateTime('d M Y, H:i')->sortable(),
+                    ->label('Tanggal Dibuat')->dateTime('d M Y, H:i')->sortable(),
             ])
             ->defaultSort('created_at', 'desc');
     }

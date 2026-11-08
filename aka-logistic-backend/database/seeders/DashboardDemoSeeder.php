@@ -35,9 +35,9 @@ class DashboardDemoSeeder extends Seeder
         });
 
         $services = [
-            'REGULAR' => ['base_fee' => 12000, 'rate_per_kg' => 4500, 'volumetric_divisor' => 5000],
-            'EXPRESS' => ['base_fee' => 20000, 'rate_per_kg' => 6500, 'volumetric_divisor' => 5000],
-            'CARGO' => ['base_fee' => 30000, 'rate_per_kg' => 3500, 'volumetric_divisor' => 4000],
+            'REGULAR_SEA' => ['base_fee' => 12000, 'rate_per_kg' => 4500, 'volumetric_divisor' => 5000],
+            'EXPRESS_AIR' => ['base_fee' => 20000, 'rate_per_kg' => 6500, 'volumetric_divisor' => 5000],
+            'OVERLAND' => ['base_fee' => 30000, 'rate_per_kg' => 3500, 'volumetric_divisor' => 4000],
         ];
 
         $tariffs = [];
@@ -61,26 +61,26 @@ class DashboardDemoSeeder extends Seeder
         }
 
         $demoShipments = [
-            ['0001', 'Maya Collection', 'Nadia Putri', 'JKT', 'BDG', 'REGULAR', 'DELIVERED', 1, 2.4, 30, 25, 18, -26, -23],
-            ['0002', 'Ruang Rasa Coffee', 'Dimas Pratama', 'BDG', 'JKT', 'EXPRESS', 'DELIVERED', 2, 5.0, 40, 30, 25, -24, -21],
-            ['0003', 'Batik Arunika', 'Sari Wulandari', 'YGY', 'SBY', 'REGULAR', 'DELIVERED', 3, 3.2, 35, 25, 20, -20, -17],
-            ['0004', 'Nusa Gadget Store', 'Rizky Mahendra', 'JKT', 'SMG', 'EXPRESS', 'DELIVERED', 4, 1.8, 22, 18, 12, -18, -15],
-            ['0005', 'Kopi Pagi Roastery', 'Aulia Rahman', 'SBY', 'MKS', 'CARGO', 'DELIVERED', 5, 18.0, 60, 45, 40, -16, -13],
-            ['0006', 'Maya Collection', 'Maya Lestari', 'SMG', 'JKT', 'REGULAR', 'ON_HOLD', 6, 4.5, 35, 25, 20, -8, -5],
-            ['0007', 'Sentra Elektronik', 'Fajar Nugroho', 'JKT', 'SBY', 'CARGO', 'IN_TRANSIT', 7, 22.0, 70, 50, 45, -4, 3],
-            ['0008', 'Dapur Rempah', 'Intan Permata', 'BDG', 'YGY', 'REGULAR', 'IN_TRANSIT', 8, 6.0, 40, 30, 20, -3, 4],
-            ['0009', 'Karya Kulit Studio', 'Bima Saputra', 'SBY', 'SMG', 'EXPRESS', 'IN_TRANSIT', 9, 2.2, 28, 20, 16, -2, 5],
-            ['0010', 'Urban Living ID', 'Citra Amelia', 'JKT', 'MKS', 'CARGO', 'IN_MARITIME_TRANSIT', 10, 45.0, 90, 60, 55, -1, 8],
+            ['0001', 'Maya Collection', 'Nadia Putri', 'JKT', 'BDG', 'REGULAR_SEA', 'DELIVERED', 1, 2.4, 30, 25, 18, -26, -23],
+            ['0002', 'Ruang Rasa Coffee', 'Dimas Pratama', 'BDG', 'JKT', 'EXPRESS_AIR', 'DELIVERED', 2, 5.0, 40, 30, 25, -24, -21],
+            ['0003', 'Batik Arunika', 'Sari Wulandari', 'YGY', 'SBY', 'REGULAR_SEA', 'DELIVERED', 3, 3.2, 35, 25, 20, -20, -17],
+            ['0004', 'Nusa Gadget Store', 'Rizky Mahendra', 'JKT', 'SMG', 'EXPRESS_AIR', 'DELIVERED', 4, 1.8, 22, 18, 12, -18, -15],
+            ['0005', 'Kopi Pagi Roastery', 'Aulia Rahman', 'SBY', 'MKS', 'OVERLAND', 'DELIVERED', 5, 18.0, 60, 45, 40, -16, -13],
+            ['0006', 'Maya Collection', 'Maya Lestari', 'SMG', 'JKT', 'REGULAR_SEA', 'ON_HOLD', 6, 4.5, 35, 25, 20, -8, -5],
+            ['0007', 'Sentra Elektronik', 'Fajar Nugroho', 'JKT', 'SBY', 'OVERLAND', 'IN_TRANSIT', 7, 22.0, 70, 50, 45, -4, 3],
+            ['0008', 'Dapur Rempah', 'Intan Permata', 'BDG', 'YGY', 'REGULAR_SEA', 'IN_TRANSIT', 8, 6.0, 40, 30, 20, -3, 4],
+            ['0009', 'Karya Kulit Studio', 'Bima Saputra', 'SBY', 'SMG', 'EXPRESS_AIR', 'IN_TRANSIT', 9, 2.2, 28, 20, 16, -2, 5],
+            ['0010', 'Urban Living ID', 'Citra Amelia', 'JKT', 'MKS', 'OVERLAND', 'IN_MARITIME_TRANSIT', 10, 45.0, 90, 60, 55, -1, 8],
             ['0011', 'Pustaka Kita', 'Dewi Anggraini', 'YGY', 'JKT', 'REGULAR', 'IN_TRANSIT', 11, 7.5, 42, 32, 24, 0, 6],
-            ['0012', 'Lensa Nusantara', 'Arif Setiawan', 'SMG', 'SBY', 'EXPRESS', 'ARRIVED_AT_DESTINATION', 12, 1.4, 20, 16, 12, -1, 1],
+            ['0012', 'Lensa Nusantara', 'Arif Setiawan', 'SMG', 'SBY', 'EXPRESS_AIR', 'ARRIVED_AT_DESTINATION', 12, 1.4, 20, 16, 12, -1, 1],
             ['0013', 'Green Home Supply', 'Tania Kusuma', 'BDG', 'MKS', 'CARGO', 'IN_MARITIME_TRANSIT', 13, 32.0, 80, 55, 45, -2, 9],
-            ['0014', 'Kebun Organik', 'Yoga Firmansyah', 'SBY', 'JKT', 'REGULAR', 'REGISTERED', 14, 9.0, 45, 35, 25, 0, 5],
+            ['0014', 'Kebun Organik', 'Yoga Firmansyah', 'SBY', 'JKT', 'REGULAR_SEA', 'REGISTERED', 14, 9.0, 45, 35, 25, 0, 5],
             ['0015', 'Atelier Senja', 'Larasati', 'JKT', 'YGY', 'EXPRESS', 'IN_TRANSIT', 15, 3.6, 32, 24, 18, -1, 4],
-            ['0016', 'Prima Office', 'Hendra Wijaya', 'MKS', 'SBY', 'CARGO', 'ON_HOLD', 16, 28.0, 75, 50, 45, -5, -2],
+            ['0016', 'Prima Office', 'Hendra Wijaya', 'MKS', 'SBY', 'OVERLAND', 'ON_HOLD', 16, 28.0, 75, 50, 45, -5, -2],
             ['0017', 'Daily Essentials', 'Nabila Zahra', 'SMG', 'BDG', 'REGULAR', 'DELIVERED', 17, 2.0, 25, 20, 15, -45, -42],
             ['0018', 'Monokrom Apparel', 'Kevin Tan', 'JKT', 'SBY', 'EXPRESS', 'DELIVERED', 18, 6.5, 38, 28, 22, -75, -72],
             ['0019', 'Sumber Makmur', 'Wahyu Hidayat', 'BDG', 'SMG', 'REGULAR', 'DELIVERED', 19, 12.0, 50, 40, 30, -105, -102],
-            ['0020', 'Pixel Works', 'Andini Safitri', 'YGY', 'MKS', 'CARGO', 'DELIVERED', 20, 16.0, 65, 45, 35, -135, -132],
+            ['0020', 'Pixel Works', 'Andini Safitri', 'YGY', 'MKS', 'OVERLAND', 'DELIVERED', 20, 16.0, 65, 45, 35, -135, -132],
             ['0021', 'Rumah Anyam', 'Galih Prakoso', 'SBY', 'BDG', 'REGULAR', 'IN_TRANSIT', 21, 5.5, 36, 26, 18, -6, 1],
             ['0022', 'Savana Outdoor', 'Rani Oktavia', 'JKT', 'SMG', 'EXPRESS', 'ARRIVED_AT_DESTINATION', 22, 8.0, 48, 35, 28, -1, 1],
             ['0023', 'Pangan Sehat', 'Bagas Ramadhan', 'MKS', 'YGY', 'CARGO', 'REGISTERED', 23, 14.0, 58, 42, 36, 0, 7],
@@ -137,7 +137,7 @@ class DashboardDemoSeeder extends Seeder
                 ],
             );
 
-            $location = in_array($status, ['DELIVERED', 'ARRIVED_AT_DESTINATION'], true)
+            $shipment->created_at = $createdAt;\n            $shipment->updated_at = $eventAt;\n            $shipment->saveQuietly();\n\n            $location = in_array($status, ['DELIVERED', 'ARRIVED_AT_DESTINATION'], true)
                 ? $destination
                 : $origin;
 

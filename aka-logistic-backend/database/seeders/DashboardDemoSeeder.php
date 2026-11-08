@@ -25,7 +25,7 @@ class DashboardDemoSeeder extends Seeder
             ['code' => 'YGY', 'name' => 'Yogyakarta Branch', 'city' => 'Yogyakarta', 'address' => 'Jl. Malioboro No. 42, Yogyakarta', 'phone' => '+62 274 5550 1005'],
             ['code' => 'MKS', 'name' => 'Makassar Hub', 'city' => 'Makassar', 'address' => 'Jl. Perintis Kemerdekaan No. 9, Makassar', 'phone' => '+62 411 5550 1006'],
         ])->mapWithKeys(function (array $data) {
-            $branch = Branch::updateOrCreate(
+            $branch = Branch::firstOrCreate(
                 ['code' => $data['code']],
                 $data + ['is_active' => true],
             );
@@ -47,7 +47,7 @@ class DashboardDemoSeeder extends Seeder
                 }
 
                 foreach ($services as $service => $rates) {
-                    $tariffs[$originCode . '-' . $destinationCode . '-' . $service] = Tariff::updateOrCreate(
+                    $tariffs[$originCode . '-' . $destinationCode . '-' . $service] = Tariff::firstOrCreate(
                         [
                             'origin_branch_id' => $origin->id,
                             'destination_branch_id' => $destination->id,

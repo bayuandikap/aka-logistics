@@ -114,12 +114,12 @@ class PortfolioDemoSeeder extends Seeder
                 $customer = $customers[$index % count($customers)];
                 $route = $routes[$index % count($routes)];
                 [$originCode, $destinationCode, $service] = $route;
+                $status = $statuses[$index];
                 if ($status === 'IN_MARITIME_TRANSIT') {
                     $service = 'REGULAR_SEA';
                 }
                 $origin = $branches[$originCode];
                 $destination = $branches[$destinationCode];
-                $status = $statuses[$index];
 
                 $monthStart = now()->startOfMonth()->subMonths($monthOffset);
                 $day = $monthOffset === 0 ? min(1 + ($slot * 1), (int) now()->day) : 2 + (($slot * 4) % 24);
@@ -157,7 +157,7 @@ class PortfolioDemoSeeder extends Seeder
 
                 $estimatedDays = $service === 'EXPRESS_AIR' ? 2 : ($service === 'OVERLAND' ? 4 : 6);
                 $estimatedArrival = $createdAt->copy()->addDays($estimatedDays);
-                $deliveredAt = $estimatedArrival->copy()->addDays(($index % 4) - 1);
+                $deliveredAt = $estimatedArrival->copy()->addDays($index % 3);
                 if ($status === 'DELIVERED' && $deliveredAt->isFuture()) {
                     $deliveredAt = now()->subHour();
                 }

@@ -57,6 +57,16 @@ function locationName(
   return location?.name || location?.city || "Belum tersedia";
 }
 
+function serviceLabel(service: string) {
+  const labels: Record<string, string> = {
+    REGULAR_SEA: "Kargo Laut Reguler",
+    EXPRESS_AIR: "Kargo Udara Ekspres",
+    OVERLAND: "Kargo Darat",
+  };
+
+  return labels[service] || service.replaceAll("_", " ");
+}
+
 function statusLabel(status: string) {
   const labels: Record<string, string> = {
     REGISTERED: "Barang diterima",
@@ -206,7 +216,7 @@ export default function Home() {
                     {shipment.tracking_number}
                   </h2>
                   <p className="mt-2 text-sm text-slate-500">
-                    Layanan: {shipment.service_type.replaceAll("_", " ")}
+                    Layanan: {serviceLabel(shipment.service_type)}
                   </p>
                 </div>
 

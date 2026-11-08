@@ -43,7 +43,7 @@ class PortfolioDemoSeeder extends Seeder
         $records = [
             ['code' => 'JKT01', 'name' => 'Cabang Jakarta Pusat', 'city' => 'Jakarta', 'address' => 'Jl. Cikini Raya No. 18, Menteng, Jakarta Pusat', 'phone' => '021-3190-1101'],
             ['code' => 'BDG01', 'name' => 'Cabang Bandung', 'city' => 'Bandung', 'address' => 'Jl. Soekarno Hatta No. 245, Buahbatu, Bandung', 'phone' => '022-8734-2201'],
-            ['code' => 'SBY01', 'name' => 'Cabang Surabaya', 'city' => 'Surabaya', 'address' => 'Jl. Perak Timur No. ನ್45, Pabean Cantian, Surabaya', 'phone' => '031-9901-3301'],
+            ['code' => 'SBY01', 'name' => 'Cabang Surabaya', 'city' => 'Surabaya', 'address' => 'Jl. Perak Timur No. 45, Pabean Cantian, Surabaya', 'phone' => '031-9901-3301'],
             ['code' => 'SMG01', 'name' => 'Cabang Semarang', 'city' => 'Semarang', 'address' => 'Jl. Kaligawe Raya No. 72, Genuk, Semarang', 'phone' => '024-8602-4401'],
             ['code' => 'DPS01', 'name' => 'Cabang Denpasar', 'city' => 'Denpasar', 'address' => 'Jl. Gatot Subroto Timur No. 56, Denpasar', 'phone' => '0361-8805-5501'],
             ['code' => 'MKS01', 'name' => 'Cabang Makassar', 'city' => 'Makassar', 'address' => 'Jl. Perintis Kemerdekaan No. 108, Makassar', 'phone' => '0411-8706-6601'],
@@ -113,6 +113,9 @@ class PortfolioDemoSeeder extends Seeder
                 $customer = $customers[$index % count($customers)];
                 $route = $routes[$index % count($routes)];
                 [$originCode, $destinationCode, $service] = $route;
+                if ($status === 'IN_MARITIME_TRANSIT') {
+                    $service = 'REGULAR_SEA';
+                }
                 $origin = $branches[$originCode];
                 $destination = $branches[$destinationCode];
                 $status = $statuses[$index];
@@ -194,6 +197,11 @@ class PortfolioDemoSeeder extends Seeder
                         'updated_at' => $createdAt->copy()->addHours(1),
                     ]
                 );
+
+                $shipment->forceFill([
+                    'created_at' => $createdAt,
+                    'updated_at' => $createdAt->copy()->addHours(1),
+                ])->save();
 
                 $this->seedCheckpoints($shipment, $origin, $destination, $status, $createdAt, $deliveredAt, $operator);
 

@@ -158,6 +158,9 @@ class PortfolioDemoSeeder extends Seeder
                 $estimatedDays = $service === 'EXPRESS_AIR' ? 2 : ($service === 'OVERLAND' ? 4 : 6);
                 $estimatedArrival = $createdAt->copy()->addDays($estimatedDays);
                 $deliveredAt = $estimatedArrival->copy()->addDays(($index % 4) - 1);
+                if ($status === 'DELIVERED' && $deliveredAt->isFuture()) {
+                    $deliveredAt = now()->subHour();
+                }
 
                 if ($status === 'DELIVERED') {
                     $paymentStatus = $index % 5 === 0 ? 'UNPAID' : 'PAID';

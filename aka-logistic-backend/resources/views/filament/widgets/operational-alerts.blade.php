@@ -86,7 +86,7 @@
                                         </span>
                                     </span>
                                     <span class="shrink-0 rounded-md bg-warning-100 px-2 py-1 text-[11px] font-semibold text-warning-800 dark:bg-warning-900/60 dark:text-warning-300">
-                                        {{ $shipment->estimated_arrival ? (int) $shipment->estimated_arrival->diffInDays(now()) . 'hari terlambat' : 'Overdue' }}
+                                        {{ $shipment->estimated_arrival ? (int) $shipment->estimated_arrival->diffInDays(now()) . ' hari terlambat' : 'Overdue' }}
                                     </span>
                                 </a>
                             </li>

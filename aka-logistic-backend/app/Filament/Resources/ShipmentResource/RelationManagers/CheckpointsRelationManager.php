@@ -18,6 +18,11 @@ class CheckpointsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'location_label';
 
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return auth()->user()?->can('view tracking checkpoints') ?? false;
+    }
+
     public function form(Form $form): Form
     {
         return $form->schema([
@@ -96,17 +101,20 @@ class CheckpointsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->label('Tambah Riwayat')
                     ->visible(fn (): bool => auth()->user()?->can('create tracking checkpoints') ?? false)
+                    ->authorize(fn (): bool => auth()->user()?->can('create tracking checkpoints') ?? false)
                     ->after(fn () => $this->syncShipmentStatus()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->label('Ubah')
                     ->visible(fn (): bool => auth()->user()?->can('edit tracking checkpoints') ?? false)
+                    ->authorize(fn (): bool => auth()->user()?->can('edit tracking checkpoints') ?? false)
                     ->after(fn () => $this->syncShipmentStatus()),
 
                 Tables\Actions\DeleteAction::make()
                     ->label('Hapus')
                     ->visible(fn (): bool => auth()->user()?->can('delete tracking checkpoints') ?? false)
+                    ->authorize(fn (): bool => auth()->user()?->can('delete tracking checkpoints') ?? false)
                     ->after(fn () => $this->syncShipmentStatus()),
             ])
             ->bulkActions([

@@ -7,7 +7,7 @@ use Filament\\Widgets\\ChartWidget;
 
 class ShipmentStatusChart extends ChartWidget
 {
-    protected static ?string $heading = 'Shipment Status Distribution';
+    protected static ?string $heading = 'Distribusi Status Pengiriman';
 
     protected static ?int $sort = 3;
 
@@ -30,7 +30,7 @@ class ShipmentStatusChart extends ChartWidget
 
         return [
             'datasets' => [[
-                'label' => 'Shipments',
+                'label' => 'Pengiriman',
                 'data' => collect($statuses)
                     ->map(fn ($status) => (int) ($counts[$status] ?? 0))
                     ->values()
@@ -41,12 +41,12 @@ class ShipmentStatusChart extends ChartWidget
                 ],
             ]],
             'labels' => [
-                'Registered',
-                'In Transit',
-                'Maritime Transit',
-                'Arrived at Destination',
-                'Delivered',
-                'On Hold',
+                'Terdaftar',
+                'Dalam Perjalanan',
+                'Dalam Pelayaran Laut',
+                'Tiba di Cabang Tujuan',
+                'Terkirim',
+                'Tertahan',
             ],
         ];
     }

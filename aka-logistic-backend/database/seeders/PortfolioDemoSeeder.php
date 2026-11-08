@@ -34,6 +34,7 @@ class PortfolioDemoSeeder extends Seeder
                 ['name' => 'Rina Puspitasari', 'password' => 'password']
             );
 
+            $operator->assignRole('petugas');
             $this->seedShipments($branches, $operator);
         });
     }
@@ -203,7 +204,7 @@ class PortfolioDemoSeeder extends Seeder
                     'updated_at' => $createdAt->copy()->addHours(1),
                 ])->save();
 
-                $this->seedCheckpoints($shipment, $origin, $destination, $status, $createdAt, $deliveredAt, $operator);
+                $this->seedCheckpoints($shipment, $origin, $destination, $service, $status, $createdAt, $deliveredAt, $operator);
 
                 $sequence++;
             }
@@ -214,6 +215,7 @@ class PortfolioDemoSeeder extends Seeder
         Shipment $shipment,
         Branch $origin,
         Branch $destination,
+        string $service,
         string $status,
         Carbon $createdAt,
         Carbon $deliveredAt,
@@ -241,7 +243,7 @@ class PortfolioDemoSeeder extends Seeder
             ];
         }
 
-        if (in_array($status, ['IN_MARITIME_TRANSIT', 'ARRIVED_AT_DESTINATION', 'DELIVERED'], true)) {
+        if ($service === 'REGULAR_SEA' && in_array($status, ['IN_MARITIME_TRANSIT', 'ARRIVED_AT_DESTINATION', 'DELIVERED'], true)) {
             $events[] = [
                 'status' => 'IN_MARITIME_TRANSIT',
                 'branch' => null,

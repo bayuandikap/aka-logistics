@@ -12,6 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production')) {
+            $this->command?->warn('Seeder akun dan data demo AKA Logistics hanya dijalankan di local/testing.');
+
+            return;
+        }
+
         $this->call(RoleSeeder::class);
 
         $admin = User::firstOrCreate(

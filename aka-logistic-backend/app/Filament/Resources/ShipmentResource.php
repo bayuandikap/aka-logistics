@@ -236,7 +236,9 @@ class ShipmentResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            \App\Filament\Resources\ShipmentResource\RelationManagers\CheckpointsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

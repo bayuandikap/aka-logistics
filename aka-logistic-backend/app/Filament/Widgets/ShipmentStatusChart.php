@@ -1,9 +1,9 @@
 <?php
 
-namespace App\\Filament\\Widgets;
+namespace App\Filament\Widgets;
 
-use App\\Models\\Shipment;
-use Filament\\Widgets\\ChartWidget;
+use App\Models\Shipment;
+use Filament\Widgets\ChartWidget;
 
 class ShipmentStatusChart extends ChartWidget
 {

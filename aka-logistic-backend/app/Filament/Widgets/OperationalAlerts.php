@@ -1,9 +1,9 @@
 <?php
 
-namespace App\\Filament\\Widgets;
+namespace App\Filament\Widgets;
 
-use App\\Models\\Shipment;
-use Filament\\Widgets\\Widget;
+use App\Models\Shipment;
+use Filament\Widgets\Widget;
 
 class OperationalAlerts extends Widget
 {

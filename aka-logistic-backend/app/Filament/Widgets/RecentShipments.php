@@ -1,11 +1,11 @@
 <?php
 
-namespace App\\Filament\\Widgets;
+namespace App\Filament\Widgets;
 
-use App\\Models\\Shipment;
-use Filament\\Tables;
-use Filament\\Tables\\Table;
-use Filament\\Widgets\\TableWidget as BaseWidget;
+use App\Models\Shipment;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentShipments extends BaseWidget
 {
@@ -21,13 +21,13 @@ class RecentShipments extends BaseWidget
             ->query(Shipment::query()->with(['originBranch', 'destinationBranch'])->latest('created_at'))
             ->defaultPaginationPageOption(5)
             ->columns([
-                Tables\\Columns\\TextColumn::make('tracking_number')
+                Tables\Columns\TextColumn::make('tracking_number')
                     ->label('Nomor Resi')->searchable()->copyable()->weight('bold'),
-                Tables\\Columns\\TextColumn::make('sender_name')->label('Pengirim')->searchable(),
-                Tables\\Columns\\TextColumn::make('recipient_name')->label('Penerima')->searchable(),
-                Tables\\Columns\\TextColumn::make('originBranch.name')->label('Asal'),
-                Tables\\Columns\\TextColumn::make('destinationBranch.name')->label('Tujuan'),
-                Tables\\Columns\\TextColumn::make('current_status')
+                Tables\Columns\TextColumn::make('sender_name')->label('Pengirim')->searchable(),
+                Tables\Columns\TextColumn::make('recipient_name')->label('Penerima')->searchable(),
+                Tables\Columns\TextColumn::make('originBranch.name')->label('Asal'),
+                Tables\Columns\TextColumn::make('destinationBranch.name')->label('Tujuan'),
+                Tables\Columns\TextColumn::make('current_status')
                     ->label('Status')->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'REGISTERED' => 'Terdaftar',
@@ -47,7 +47,7 @@ class RecentShipments extends BaseWidget
                         'ON_HOLD' => 'danger',
                         default => 'gray',
                     }),
-                Tables\\Columns\\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Dibuat')->dateTime('d M Y, H:i')->sortable(),
             ])
             ->defaultSort('created_at', 'desc');

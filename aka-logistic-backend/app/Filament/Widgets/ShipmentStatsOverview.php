@@ -13,22 +13,36 @@ class ShipmentStatsOverview extends BaseWidget
     protected function getStats(): array
     {
         $totalShipments = Shipment::count();
-        $deliveredShipments = Shipment::where('current_status', 'DELIVERED')->count();
+
+        // The summary intentionally groups land and sea transit into one KPI.
         $inTransitShipments = Shipment::whereIn('current_status', [
             'IN_TRANSIT',
             'IN_MARITIME_TRANSIT',
         ])->count();
+
+        $deliveredShipments = Shipment::where('current_status', 'DELIVERED')->count();
         $onHoldShipments = Shipment::where('current_status', 'ON_HOLD')->count();
 
         return [
             Stat::make('Total Pengiriman', $totalShipments)
-                ->description('Seluruh pengiriman terdaftar')->color('primary')->icon('heroicon-o-cube'),
-            Stat::make('Terkirim', $deliveredShipments)
-                ->description('Berhasil diantarkan')->color('success')->icon('heroicon-o-check-circle'),
+                ->description('Semua pengiriman yang tercatat')
+                ->color('primary')
+                ->icon('heroicon-o-cube'),
+
             Stat::make('Dalam Perjalanan', $inTransitShipments)
-                ->description('Sedang dalam proses pengiriman')->color('warning')->icon('heroicon-o-truck'),
+                ->description('Gabungan pengiriman darat dan laut')
+                ->color('info')
+                ->icon('heroicon-o-truck'),
+
+            Stat::make('Terkirim', $deliveredShipments)
+                ->description('Sudah diterima oleh penerima')
+                ->color('success')
+                ->icon('heroicon-o-check-circle'),
+
             Stat::make('Tertahan', $onHoldShipments)
-                ->description('Memerlukan tindak lanjut operasional')->color('danger')->icon('heroicon-o-exclamation-triangle'),
+                ->description('Perlu pemeriksaan atau tindak lanjut')
+                ->color('danger')
+                ->icon('heroicon-o-exclamation-triangle'),
         ];
     }
 }

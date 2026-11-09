@@ -29,6 +29,15 @@ class RecentShipments extends BaseWidget
                 Tables\\Columns\\TextColumn::make('destinationBranch.name')->label('Tujuan'),
                 Tables\\Columns\\TextColumn::make('current_status')
                     ->label('Status')->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'REGISTERED' => 'Terdaftar',
+                        'IN_TRANSIT' => 'Dalam Perjalanan (Darat)',
+                        'IN_MARITIME_TRANSIT' => 'Dalam Perjalanan (Laut)',
+                        'ARRIVED_AT_DESTINATION' => 'Tiba di Cabang Tujuan',
+                        'DELIVERED' => 'Terkirim',
+                        'ON_HOLD' => 'Tertahan',
+                        default => $state,
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'REGISTERED' => 'gray',
                         'IN_TRANSIT' => 'info',

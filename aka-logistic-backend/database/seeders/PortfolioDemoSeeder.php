@@ -115,9 +115,15 @@ class PortfolioDemoSeeder extends Seeder
         $calculator = app(FreightCalculator::class);
         $sequence = 1;
 
-        // Eight shipments per month across the last six calendar months (48 total).
+        // Gradual monthly growth across the last six calendar months (48 total).
+        // Oldest to newest: 3, 5, 7, 9, 11, and 13 shipments.
+        $monthlyShipmentCounts = [3, 5, 7, 9, 11, 13];
+
         for ($monthOffset = 5; $monthOffset >= 0; $monthOffset--) {
-            for ($slot = 0; $slot < 8; $slot++) {
+            $monthIndex = 5 - $monthOffset;
+            $shipmentsThisMonth = $monthlyShipmentCounts[$monthIndex];
+
+            for ($slot = 0; $slot < $shipmentsThisMonth; $slot++) {
                 $index = $sequence - 1;
                 $customer = $customers[$index % count($customers)];
                 $route = $routes[$index % count($routes)];

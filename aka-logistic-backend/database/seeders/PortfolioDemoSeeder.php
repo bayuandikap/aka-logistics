@@ -94,22 +94,30 @@ class PortfolioDemoSeeder extends Seeder
             ['DPS01', 'SMG01', 'OVERLAND'],
         ];
 
-        // Deliberately varied so all dashboard status groups have useful data.
+        // Balanced snapshot for the dashboard: all six statuses remain visible,
+        // while delivered and active shipments have comparable visual weight.
+        // Distribution: 18 delivered, 10 land transit, 6 sea transit,
+        // 6 arrived, 4 registered, and 4 on hold (48 total).
         $statuses = [
-            'DELIVERED', 'IN_TRANSIT', 'DELIVERED', 'ON_HOLD', 'IN_MARITIME_TRANSIT', 'DELIVERED',
-            'ARRIVED_AT_DESTINATION', 'DELIVERED', 'IN_TRANSIT', 'DELIVERED', 'REGISTERED', 'IN_MARITIME_TRANSIT',
-            'DELIVERED', 'ON_HOLD', 'IN_TRANSIT', 'DELIVERED', 'ARRIVED_AT_DESTINATION', 'IN_TRANSIT',
-            'DELIVERED', 'IN_MARITIME_TRANSIT', 'REGISTERED', 'DELIVERED', 'IN_TRANSIT', 'ARRIVED_AT_DESTINATION',
-            'DELIVERED', 'IN_MARITIME_TRANSIT', 'IN_TRANSIT', 'DELIVERED', 'REGISTERED', 'IN_TRANSIT',
-            'DELIVERED', 'ARRIVED_AT_DESTINATION', 'IN_MARITIME_TRANSIT', 'DELIVERED', 'IN_TRANSIT', 'DELIVERED',
+            'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED',
+            'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED',
+            'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED', 'DELIVERED',
+            'IN_TRANSIT', 'IN_TRANSIT', 'IN_TRANSIT', 'IN_TRANSIT', 'IN_TRANSIT',
+            'IN_TRANSIT', 'IN_TRANSIT', 'IN_TRANSIT', 'IN_TRANSIT', 'IN_TRANSIT',
+            'IN_MARITIME_TRANSIT', 'IN_MARITIME_TRANSIT', 'IN_MARITIME_TRANSIT',
+            'IN_MARITIME_TRANSIT', 'IN_MARITIME_TRANSIT', 'IN_MARITIME_TRANSIT',
+            'ARRIVED_AT_DESTINATION', 'ARRIVED_AT_DESTINATION', 'ARRIVED_AT_DESTINATION',
+            'ARRIVED_AT_DESTINATION', 'ARRIVED_AT_DESTINATION', 'ARRIVED_AT_DESTINATION',
+            'REGISTERED', 'REGISTERED', 'REGISTERED', 'REGISTERED',
+            'ON_HOLD', 'ON_HOLD', 'ON_HOLD', 'ON_HOLD',
         ];
 
         $calculator = app(FreightCalculator::class);
         $sequence = 1;
 
-        // Six shipments per month across the last six calendar months.
+        // Eight shipments per month across the last six calendar months (48 total).
         for ($monthOffset = 5; $monthOffset >= 0; $monthOffset--) {
-            for ($slot = 0; $slot < 6; $slot++) {
+            for ($slot = 0; $slot < 8; $slot++) {
                 $index = $sequence - 1;
                 $customer = $customers[$index % count($customers)];
                 $route = $routes[$index % count($routes)];
@@ -122,7 +130,10 @@ class PortfolioDemoSeeder extends Seeder
                 $destination = $branches[$destinationCode];
 
                 $monthStart = now()->startOfMonth()->subMonths($monthOffset);
-                $day = $monthOffset === 0 ? min(1 + ($slot * 1), (int) now()->day) : 2 + (($slot * 4) % 24);
+                // Keep current-month demo events far enough in the past for checkpoint chronology.
+                $day = $monthOffset === 0
+                    ? min(1 + $slot, max(1, (int) now()->day - 3))
+                    : 2 + (($slot * 3) % 24);
                 $createdAt = $monthStart->copy()->addDays($day - 1)->setTime(8 + ($slot % 8), ($slot * 7) % 60);
 
                 $actualWeight = [1.2, 2.5, 4.0, 7.5, 12.0, 18.5][$index % 6];

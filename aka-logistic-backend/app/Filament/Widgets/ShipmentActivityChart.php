@@ -1,13 +1,13 @@
 <?php
 
-namespace App\\Filament\\Widgets;
+namespace App\Filament\Widgets;
 
-use App\\Models\\Shipment;
-use Filament\\Widgets\\ChartWidget;
+use App\Models\Shipment;
+use Filament\Widgets\ChartWidget;
 
 class ShipmentActivityChart extends ChartWidget
 {
-    protected static ?string $heading = 'Shipment Activity';
+    protected static ?string $heading = 'Aktivitas Pengiriman';
 
     protected static ?int $sort = 2;
 
@@ -31,7 +31,7 @@ class ShipmentActivityChart extends ChartWidget
 
         return [
             'datasets' => [[
-                'label' => 'Shipments',
+                'label' => 'Pengiriman',
                 'data' => $data,
                 'borderColor' => '#3B82F6',
                 'backgroundColor' => 'rgba(59, 130, 246, 0.1)',

@@ -199,6 +199,15 @@ class ShipmentResource extends Resource
 
                 Tables\Columns\TextColumn::make('current_status')
                     ->label('Status')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'REGISTERED' => 'Terdaftar',
+                        'IN_TRANSIT' => 'Dalam Perjalanan',
+                        'IN_MARITIME_TRANSIT' => 'Dalam Pelayaran Laut',
+                        'ARRIVED_AT_DESTINATION' => 'Tiba di Cabang Tujuan',
+                        'DELIVERED' => 'Terkirim',
+                        'ON_HOLD' => 'Tertahan',
+                        default => str($state)->replace('_', ' ')->title()->toString(),
+                    })
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
                         'REGISTERED' => 'gray',
@@ -219,7 +228,7 @@ class ShipmentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('printAwb')
-                    ->label('Print AWB')
+                    ->label('Cetak Surat Jalan (AWB)')
                     ->icon('heroicon-o-printer')
                     ->url(fn (Shipment $record): string => route('shipments.awb', $record))
                     ->openUrlInNewTab()

@@ -3,21 +3,33 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Seed roles, a demo administrator, and realistic Indonesian portfolio data.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        if (app()->environment('production')) {
+            $this->command?->warn('Seeder akun dan data demo AKA Logistics hanya dijalankan di local/testing.');
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+            return;
+        }
+
+        $this->call(RoleSeeder::class);
+
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@aka-logistics.test'],
+            [
+                'name' => 'Administrator AKA Logistics',
+                'password' => 'password',
+            ]
+        );
+
+        $admin->assignRole('super_admin');
+
+        $this->call(PortfolioDemoSeeder::class);
     }
 }

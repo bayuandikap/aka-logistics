@@ -56,28 +56,28 @@ class BranchResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('code')
+            TextInput::make('code')->label('Kode Cabang')
                 ->required()
                 ->maxLength(10)
                 ->unique(ignoreRecord: true),
 
-            TextInput::make('name')
+            TextInput::make('name')->label('Nama Cabang')
                 ->required()
                 ->maxLength(100),
 
-            TextInput::make('city')
+            TextInput::make('city')->label('Kota')
                 ->required()
                 ->maxLength(100),
 
-            Textarea::make('address')
+            Textarea::make('address')->label('Alamat')
                 ->required()
                 ->columnSpanFull(),
 
-            TextInput::make('phone')
+            TextInput::make('phone')->label('Nomor Telepon')
                 ->tel()
                 ->maxLength(20),
 
-            Toggle::make('is_active')
+            Toggle::make('is_active')->label('Status Aktif')
                 ->default(true),
         ]);
     }
@@ -86,18 +86,18 @@ class BranchResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('code')
+                TextColumn::make('code')->label('Kode Cabang')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('name')
+                TextColumn::make('name')->label('Nama Cabang')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('city')
+                TextColumn::make('city')->label('Kota')
                     ->searchable(),
 
-                IconColumn::make('is_active')
+                IconColumn::make('is_active')->label('Status Aktif')
                     ->boolean(),
             ])
             ->actions([

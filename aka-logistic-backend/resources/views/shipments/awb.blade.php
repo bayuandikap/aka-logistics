@@ -37,10 +37,10 @@
     </style>
 </head>
 <body>
-    <div class="toolbar"><button type="button" onclick="window.print()">Print / Save as PDF</button></div>
+    <div class="toolbar"><button type="button" onclick="window.print()">Cetak / Simpan sebagai PDF</button></div>
     <main class="sheet">
         <header class="header">
-            <div><div class="brand">AKA LOGISTICS</div><div class="muted">Airway Bill / Surat Tanda Terima Pengiriman</div></div>
+            <div><div class="brand">AKA LOGISTICS</div><div class="muted">Surat Muatan / Bukti Pengiriman</div></div>
             <div class="awb-label">
                 <div class="muted">NOMOR RESI / AWB</div>
                 <div class="awb-number">{{ $shipment->tracking_number }}</div>
@@ -55,9 +55,9 @@
                 <div><div class="field-label">Tujuan</div><div class="route-name">{{ $shipment->destinationBranch?->name ?? '-' }}</div><div class="muted">{{ $shipment->destinationBranch?->city ?? '' }}</div></div>
             </div>
             <div class="row" style="margin-top:10px">
-                <div><span class="field-label">Layanan</span><strong>{{ str_replace('_', ' ', $shipment->service_type) }}</strong></div>
+                <div><span class="field-label">Layanan</span><strong>{{ match ($shipment->service_type) { 'REGULAR_SEA' => 'Kargo Laut Reguler', 'EXPRESS_AIR' => 'Kargo Udara Ekspres', 'OVERLAND' => 'Kargo Darat', default => str_replace('_', ' ', $shipment->service_type) } }}</strong></div>
                 <div><span class="field-label">Estimasi tiba</span><strong>{{ $shipment->estimated_arrival?->format('d M Y') ?? '-' }}</strong></div>
-                <div><span class="field-label">Status</span><span class="status">{{ str_replace('_', ' ', $shipment->current_status) }}</span></div>
+                <div><span class="field-label">Status</span><span class="status">{{ match ($shipment->current_status) { 'REGISTERED' => 'Terdaftar', 'IN_TRANSIT' => 'Dalam Perjalanan', 'IN_MARITIME_TRANSIT' => 'Dalam Pelayaran Laut', 'ARRIVED_AT_DESTINATION' => 'Tiba di Cabang Tujuan', 'DELIVERED' => 'Terkirim', 'ON_HOLD' => 'Tertahan', default => str_replace('_', ' ', $shipment->current_status) } }}</span></div>
             </div>
         </section>
         <section class="section grid">
@@ -80,7 +80,7 @@
                 <tr><th>Berat aktual</th><td>{{ $shipment->actual_weight_kg }} kg</td><th>Berat volume</th><td>{{ $shipment->volume_weight }} kg</td></tr>
                 <tr><th>Dimensi (P × L × T)</th><td>{{ $shipment->length_cm }} × {{ $shipment->width_cm }} × {{ $shipment->height_cm }} cm</td><th>Berat ditagihkan</th><td>{{ $shipment->chargeable_weight }} kg</td></tr>
                 <tr><th>Biaya dasar (snapshot)</th><td>Rp {{ number_format((float) $shipment->base_fee_applied, 0, ',', '.') }}</td><th>Biaya berat (snapshot)</th><td>Rp {{ number_format((float) $shipment->weight_fee, 0, ',', '.') }}</td></tr>
-                <tr><th>Pembayaran</th><td>{{ $shipment->payment_status }}</td><th>Total biaya</th><td class="total">Rp {{ number_format((float) $shipment->total_amount, 0, ',', '.') }}</td></tr>
+                <tr><th>Pembayaran</th><td>{{ match ($shipment->payment_status) { 'PAID' => 'Lunas', 'UNPAID' => 'Belum Dibayar', 'PENDING' => 'Menunggu Pembayaran', default => str_replace('_', ' ', $shipment->payment_status) } }}</td><th>Total biaya</th><td class="total">Rp {{ number_format((float) $shipment->total_amount, 0, ',', '.') }}</td></tr>
             </tbody></table>
         </section>
         <footer class="footer"><div>Dokumen ini dibuat oleh sistem AKA Logistics.</div><div>Nomor resi: {{ $shipment->tracking_number }}</div></footer>

@@ -8,6 +8,8 @@ class DemoLoginTest extends TestCase
 {
     public function test_demo_login_button_is_disabled_by_default(): void
     {
+        config(['app.demo_login_enabled' => false]);
+
         $this->get('/admin/login')
             ->assertOk()
             ->assertDontSee('Try Demo Account');

@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed roles, a demo administrator, and realistic Indonesian portfolio data.
+     * Seed demo accounts, roles, and realistic Indonesian portfolio data.
      */
     public function run(): void
     {
@@ -29,6 +29,16 @@ class DatabaseSeeder extends Seeder
         );
 
         $admin->assignRole('super_admin');
+
+        $dispatcher = User::firstOrCreate(
+            ['email' => 'dispatcher.demo@aka-logistics.test'],
+            [
+                'name' => 'Dispatcher AKA Logistics',
+                'password' => 'password',
+            ]
+        );
+
+        $dispatcher->assignRole('admin_operasional');
 
         $this->call(PortfolioDemoSeeder::class);
     }

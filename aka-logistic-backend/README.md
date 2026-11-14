@@ -146,6 +146,10 @@ php artisan serve
 * Access the Admin Panel at: `http://127.0.0.1:8000/admin`
 * Access the API at: `http://127.0.0.1:8000/api/v1/tracking/{resi}`
 
+For local/testing demos, `php artisan migrate --seed` creates the dispatcher account `dispatcher.demo@aka-logistics.test` with password `password` and the `admin_operasional` role. The demo credentials are not seeded in production.
+
+Super admins can use **Manajemen Akses** in Filament to create roles and assign the application's existing permissions. The `super_admin` role is protected from editing and deletion.
+
 The Filament demo-login button is disabled by default. To enable it locally, set `DEMO_LOGIN_ENABLED=true`; it remains unavailable outside the `local` and `testing` environments.
 
 ## Deploy to Railway

@@ -68,28 +68,32 @@ class RoleSeeder extends Seeder
 
         // Operational admin: manage shipments and tracking,
         // view branches and tariffs.
-        $adminOperasional->syncPermissions([
-            'view branches',
-            'view tariffs',
+        if ($adminOperasional->wasRecentlyCreated) {
+            $adminOperasional->syncPermissions([
+                'view branches',
+                'view tariffs',
 
-            'view shipments',
-            'create shipments',
-            'edit shipments',
-            'delete shipments',
+                'view shipments',
+                'create shipments',
+                'edit shipments',
+                'delete shipments',
 
-            'view tracking checkpoints',
-            'create tracking checkpoints',
-            'edit tracking checkpoints',
-            'delete tracking checkpoints',
-        ]);
+                'view tracking checkpoints',
+                'create tracking checkpoints',
+                'edit tracking checkpoints',
+                'delete tracking checkpoints',
+            ]);
+        }
 
         // Petugas: view shipments and manage tracking updates.
-        $petugas->syncPermissions([
-            'view shipments',
-            'view tracking checkpoints',
-            'create tracking checkpoints',
-            'edit tracking checkpoints',
-        ]);
+        if ($petugas->wasRecentlyCreated) {
+            $petugas->syncPermissions([
+                'view shipments',
+                'view tracking checkpoints',
+                'create tracking checkpoints',
+                'edit tracking checkpoints',
+            ]);
+        }
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
     }

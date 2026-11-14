@@ -146,6 +146,42 @@ php artisan serve
 * Access the Admin Panel at: `http://127.0.0.1:8000/admin`
 * Access the API at: `http://127.0.0.1:8000/api/v1/tracking/{resi}`
 
+The Filament demo-login button is disabled by default. To enable it locally, set `DEMO_LOGIN_ENABLED=true`; it remains unavailable outside the `local` and `testing` environments.
 
+## Deploy to Railway
 
-```
+This backend lives in a monorepo, so configure the Railway service to deploy only this directory:
+
+1. Create a Railway project and add a service from this GitHub repository.
+2. In the service settings, set **Root Directory** to `/aka-logistic-backend`.
+3. Keep the default Railpack builder and commands. Railway detects Laravel, installs the Composer and npm dependencies, builds the Vite assets, and runs Laravel. Its Laravel startup runs pending migrations; the initial users migration also creates the database-backed sessions table.
+4. Add a Railway MySQL service. In the backend service's **Variables**, add the following (replace `MySQL` in references if your database service has a different name):
+
+   ```env
+   APP_NAME="AKA Logistics"
+   APP_ENV=production
+   APP_DEBUG=false
+   DEMO_LOGIN_ENABLED=false
+   APP_KEY=base64:<generated-key>
+   APP_URL=https://<your-backend-domain>
+   LOG_LEVEL=info
+
+   DB_CONNECTION=mysql
+   DB_HOST=${{MySQL.MYSQLHOST}}
+   DB_PORT=${{MySQL.MYSQLPORT}}
+   DB_DATABASE=${{MySQL.MYSQLDATABASE}}
+   DB_USERNAME=${{MySQL.MYSQLUSER}}
+   DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
+
+   SESSION_DRIVER=database
+   CACHE_STORE=database
+   QUEUE_CONNECTION=database
+   CORS_ALLOWED_ORIGINS=https://<your-client-domain>
+   ```
+
+   Generate the application key from this directory with `php artisan key:generate --show`, then copy its output into `APP_KEY`. Do not commit the key or an `.env` file.
+5. Generate a public domain for the backend and set `APP_URL` to that HTTPS URL. Set `CORS_ALLOWED_ORIGINS` to the exact HTTPS origin of the deployed client (no trailing slash).
+6. Deploy. The Laravel health endpoint is `/up`; configure it as the service health-check path if you enable Railway health checks.
+7. After the first successful deployment, create the initial admin account from the Railway service shell with `php artisan filament:user`. Production seeding intentionally skips the demo account and portfolio data.
+
+The backend uses database sessions, cache, and queues. The migrations create the required tables. If queued jobs are used, run a separate Railway worker service with `php artisan queue:work`; otherwise, change `QUEUE_CONNECTION` to `sync`.

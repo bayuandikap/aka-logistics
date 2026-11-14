@@ -16,7 +16,10 @@ class Login extends BaseLogin
     {
         $actions = parent::getFormActions();
 
-        if (app()->environment(['local', 'testing'])) {
+        if (
+            config('app.demo_login_enabled') &&
+            app()->environment(['local', 'testing'])
+        ) {
             $actions[] = Action::make('demoLogin')
                 ->label('Try Demo Account')
                 ->color('gray')
@@ -28,7 +31,11 @@ class Login extends BaseLogin
 
     public function authenticateDemoAccount(): ?LoginResponse
     {
-        abort_unless(app()->environment(['local', 'testing']), 404);
+        abort_unless(
+            config('app.demo_login_enabled') &&
+            app()->environment(['local', 'testing']),
+            404
+        );
 
         try {
             $this->rateLimit(5);

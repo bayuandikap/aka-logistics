@@ -2,6 +2,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { apiUrl } from "@/lib/api";
 
 type TrackingEvent = {
   status: string;
@@ -34,9 +35,6 @@ type ApiResponse = {
   data?: TrackingData;
   error?: { message: string };
 };
-
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 function formatDate(value: string | null) {
   if (!value) return "Belum tersedia";
@@ -97,7 +95,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        `${API_URL}/api/v1/tracking/${encodeURIComponent(trackingNumber)}`,
+        apiUrl(`tracking/${encodeURIComponent(trackingNumber)}`),
         { headers: { Accept: "application/json" } }
       );
 
@@ -276,7 +274,7 @@ export default function Home() {
                     >
                       <div className="flex flex-col items-center">
                         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-100 text-sm font-bold text-orange-700">
-                          {shipment.timeline.length - index}
+                          {index + 1}
                         </span>
                         {index < shipment.timeline.length - 1 && (
                           <span className="mt-2 min-h-8 w-px flex-1 bg-slate-200" />
